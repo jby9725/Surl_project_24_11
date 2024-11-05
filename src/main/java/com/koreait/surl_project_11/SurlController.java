@@ -35,9 +35,9 @@ public class SurlController {
             @PathVariable String body,
             HttpServletRequest req
     ) {
-        String requestURI =  req.getRequestURI();
+        String requestURI = req.getRequestURI();
 
-        if(req.getQueryString() != null) {
+        if (req.getQueryString() != null) {
             requestURI += "?" + req.getQueryString();
         }
 
@@ -45,6 +45,39 @@ public class SurlController {
 
         requestURI = urlBits[3];
 
+        Surl surl = Surl.builder()
+                .id(++surlsLastId)
+                .body(body)
+                .url(requestURI)
+                .build();
+
+        surls.add(surl);
+
         return requestURI;
     }
+
+    @GetMapping("/all")
+    @ResponseBody
+    public List<Surl> getAll() {
+
+        return surls;
+    }
+
+    @GetMapping("/g/{id}")
+    public String go(
+            @PathVariable long id
+    ) {
+        Surl surl = surls.stream()
+                .filter(_surl -> _surl.getId() == id)
+                .findFirst()
+                .orElse(null);
+
+        if (surl == null) throw new RuntimeException("%d번 데이터를 찾을 수 없어요.".formatted(id));
+
+        surl.increaseCount();
+
+        // 경로 다시 설정
+        return "redirect:" + surl.getUrl();
+    }
+
 }
