@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Profile;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -61,12 +62,16 @@ public class NotProd {
             return;
         }
 
-        Article articleFirst = Article.builder().
-                title("제목1")
+        Article articleFirst = Article.builder()
+                .createDate(LocalDateTime.now())
+                .modifyDate(LocalDateTime.now())
+                .title("제목1")
                 .body("내용1").build();
 
-        Article articleSecond = Article.builder().
-                title("제목2")
+        Article articleSecond = Article.builder()
+                .createDate(LocalDateTime.now())
+                .modifyDate(LocalDateTime.now())
+                .title("제목2")
                 .body("내용2").build();
 
         System.out.println(articleFirst.getId());
@@ -100,7 +105,7 @@ public class NotProd {
 
     @Transactional
     public void work3() {
-        List <Long> ids = new ArrayList<>();
+        List<Long> ids = new ArrayList<>();
         ids.add(1L);
         ids.add(2L);
         ids.add(3L);
@@ -108,7 +113,7 @@ public class NotProd {
         // from article
         // where id IN (1,2,3)
         // order by title DESC, id asc;
-        // articleRepository.findByIdInOrderByTitleDescIdAsc(ids);
+        // articleRepository.findByIdInOrderByTitleDescIdAsc(ids); 또는
         articleRepository.findByIdInOrderByTitleDescIdAsc(List.of(1L, 2L, 3L));
     }
 

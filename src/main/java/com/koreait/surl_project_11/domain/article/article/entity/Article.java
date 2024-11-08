@@ -1,10 +1,12 @@
 package com.koreait.surl_project_11.domain.article.article.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDateTime;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -16,11 +18,16 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class) // @CreatedDate 와 @LastModifiedDate 쓸려면 붙여야 함.
 public class Article {
 
     @Id // 이 필드를 PK로 쓸거임!
     @GeneratedValue(strategy = IDENTITY) // 이거 AUTO_INCREMENT 로 만들 거임!
     private long id;
+    @CreatedDate
+    private LocalDateTime createDate;
+    @LastModifiedDate
+    private LocalDateTime modifyDate;
     private String title;
     @Column(columnDefinition = "TEXT")
     private String body; // 이 필드의 자료형을 TEXT로 지정 할거야!
