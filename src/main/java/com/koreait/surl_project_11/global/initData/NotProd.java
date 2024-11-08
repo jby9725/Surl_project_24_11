@@ -109,12 +109,18 @@ public class NotProd {
     public void joinMember() {
 
         Member member1 = memberService.join("user1", "1234", "유저1").getData();
-        Member member2 = memberService.join("user1", "1234", "유저1").getData();
-        RsData<Member> member3 = memberService.join("user2", "1234", "유저2");
+        RsData<Member> member2 = memberService.join("user2", "1234", "유저2");
 
-        System.out.println("member3.getMsg() : " + member3.getMsg());
-        System.out.println("member3.getStatusCode() : " + member3.getStatusCode());
+//        try {
+//            RsData<Member> joinRs = memberService.join("user2", "1234", "유저 2");
+//        } catch (GlobalException e) {
+//            System.out.println("e.getMsg() : " + e.getRsData().getMsg());
+//            System.out.println("e.getStatusCode() : " + e.getRsData().getStatusCode());
+//        }
+
+        System.out.println("member3.getMsg() : " + member2.getMsg());
+        System.out.println("member3.getStatusCode() : " + member2.getStatusCode());
+
     }
-
 
 }
