@@ -2,7 +2,9 @@ package com.koreait.surl_project_11.global.initData;
 
 import com.koreait.surl_project_11.domain.article.article.entity.Article;
 import com.koreait.surl_project_11.domain.article.article.repository.ArticleRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,39 +18,49 @@ public class NotProd {
 
     @Bean // 빈을 등록한다. 스트링부트에. 개발자가 new 하지 않아도 스프링부트가 직접 관리하는 객체. 실행될때 자동으로 올라간다.
     public ApplicationRunner initNotProd() {
-        return args -> {
-            System.out.println("Not Prod.initNotProd1");
-            System.out.println("Not Prod.initNotProd2");
-            System.out.println("Not Prod.initNotProd3");
+        return new ApplicationRunner() {
+            @Override
+            @Transactional
+            public void run(ApplicationArguments args) throws Exception {
+                System.out.println("Not Prod.initNotProd1");
+                System.out.println("Not Prod.initNotProd2");
+                System.out.println("Not Prod.initNotProd3");
 
-            // articleRepository.deleteAll(); // AUTO_INCREMENT 값이 초기화 되지 않는다.
+                // articleRepository.deleteAll(); // AUTO_INCREMENT 값이 초기화 되지 않는다.
 
-            // DB 쪽에서 직접 TRUNCATE : AUTO_INCREMENT 값이 초기화 된다.
+                // DB 쪽에서 직접 TRUNCATE : AUTO_INCREMENT 값이 초기화 된다.
 
-            long countAll = articleRepository.count();
+                long countAll = articleRepository.count();
 
-            System.out.println("countAll: " + countAll);
+                System.out.println("countAll: " + countAll);
 
-            if (countAll > 0) {
-                return;
+                if (countAll > 0) {
+                    return;
+                }
+
+                Article articleFirst = Article.builder().
+                        title("제목1")
+                        .body("내용1").build();
+
+                Article articleSecond = Article.builder().
+                        title("제목2")
+                        .body("내용2").build();
+
+                System.out.println(articleFirst.getId());
+                System.out.println(articleSecond.getId());
+
+                articleRepository.save(articleFirst);
+                articleRepository.save(articleSecond);
+
+                System.out.println("articleFirst.getId() : " + articleFirst.getId());
+                System.out.println("articleSecond.getId() : " + articleSecond.getId());
+
+                // 내용을 수정하려고 할 때
+                articleFirst.setTitle("수정된 제목");
+
+                // 하나 삭제하려고 할 때
+                articleRepository.delete(articleSecond);
             }
-
-            Article articleFirst = Article.builder().
-                    title("제목1")
-                    .body("내용1").build();
-
-            Article articleSecond = Article.builder().
-                    title("제목2")
-                    .body("내용2").build();
-
-            System.out.println(articleFirst.getId());
-            System.out.println(articleSecond.getId());
-
-            articleRepository.save(articleFirst);
-            articleRepository.save(articleSecond);
-
-            System.out.println(articleFirst.getId());
-            System.out.println(articleSecond.getId());
         };
     }
 }

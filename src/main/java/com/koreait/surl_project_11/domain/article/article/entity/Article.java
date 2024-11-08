@@ -4,10 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -16,6 +13,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Builder
 // 하지만 NoArgsConstructor 추가하면 빌더가 뭐라고 하고, 그걸 피하기 위해서는 AllArgsConstructor 가 있어야 함.
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Article {
