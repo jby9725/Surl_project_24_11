@@ -2,6 +2,9 @@ package com.koreait.surl_project_11.global.initData;
 
 import com.koreait.surl_project_11.domain.article.article.entity.Article;
 import com.koreait.surl_project_11.domain.article.article.service.ArticleService;
+import com.koreait.surl_project_11.domain.member.member.entity.Member;
+import com.koreait.surl_project_11.domain.member.member.service.MemberService;
+import com.koreait.surl_project_11.global.rsData.RsData;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +33,7 @@ public class NotProd {
     private NotProd self;
 
     private final ArticleService articleService;
+    private final MemberService memberService;
 
 //    @Autowired
 //    private ArticleRepository articleRepository;
@@ -38,10 +42,12 @@ public class NotProd {
     public ApplicationRunner initNotProd() {
         return args -> {
             self.work1();
-            self.work2(); //this. 가 생략 되어 있다.
+            work2(); //this. 가 생략 되어 있다. 이러면 트랜잭션 적용을 못 받는다.
 //            self.work3();
 //            self.work4();
 //            self.work5();
+
+            self.joinMember();
         };
     }
 
@@ -82,10 +88,6 @@ public class NotProd {
         ids.add(1L);
         ids.add(2L);
         ids.add(3L);
-        // select *
-        // from article
-        // where id IN (1,2,3)
-        // order by title DESC, id asc;
         // articleRepository.findByIdInOrderByTitleDescIdAsc(ids); 또는
 //        articleRepository.findByIdInOrderByTitleDescIdAsc(List.of(1L, 2L, 3L));
     }
@@ -93,9 +95,6 @@ public class NotProd {
     @Transactional
     public void work4() {
         String keyword = "안녕";
-        // select *
-        // from article
-        // where title LIKE '%안녕%';
 //        articleRepository.findByTitleContaining(keyword);
     }
 
@@ -103,10 +102,19 @@ public class NotProd {
     public void work5() {
         String title = "안녕";
         String body = "잘가";
-        // select *
-        // from article
-        // where title = '안녕'
-        // AND body = '잘가';
 //        articleRepository.findByTitleAndBody(title, body);
     }
+
+    @Transactional
+    public void joinMember() {
+
+        Member member1 = memberService.join("user1", "1234", "유저1").getData();
+        Member member2 = memberService.join("user1", "1234", "유저1").getData();
+        RsData<Member> member3 = memberService.join("user2", "1234", "유저2");
+
+        System.out.println("member3.getMsg() : " + member3.getMsg());
+        System.out.println("member3.getStatusCode() : " + member3.getStatusCode());
+    }
+
+
 }
