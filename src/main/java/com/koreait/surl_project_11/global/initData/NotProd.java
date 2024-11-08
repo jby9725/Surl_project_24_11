@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Profile;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -48,51 +47,20 @@ public class NotProd {
 
     @Transactional
     public void work1() {
-        System.out.println("Not Prod.initNotProd1");
-        System.out.println("Not Prod.initNotProd2");
-        System.out.println("Not Prod.initNotProd3");
 
         // articleRepository.deleteAll(); // AUTO_INCREMENT 값이 초기화 되지 않는다.
-
         // DB 쪽에서 직접 TRUNCATE : AUTO_INCREMENT 값이 초기화 된다.
 
-        long countAll = articleService.count();
+        if (articleService.count() > 0) return;
 
-        System.out.println("countAll: " + countAll);
+        Article article1 = articleService.write("제목 1", "내용 1").getData();
+        Article article2 = articleService.write("제목 2", "내용 2").getData();
 
-        if (countAll > 0) {
-            return;
-        }
-
-        Article articleFirst = Article.builder()
-                .createDate(LocalDateTime.now())
-                .modifyDate(LocalDateTime.now())
-                .title("제목1")
-                .body("내용1").build();
-
-        Article articleSecond = Article.builder()
-                .createDate(LocalDateTime.now())
-                .modifyDate(LocalDateTime.now())
-                .title("제목2")
-                .body("내용2").build();
-
-        System.out.println(articleFirst.getId());
-        System.out.println(articleSecond.getId());
-
-//        articleRepository.save(articleFirst);
-//        articleRepository.save(articleSecond);
-
-        articleService.write("제목1", "내용1");
-        articleService.write("제목2", "내용2");
-
-        System.out.println("articleFirst.getId() : " + articleFirst.getId());
-        System.out.println("articleSecond.getId() : " + articleSecond.getId());
-
-        // 내용을 수정하려고 할 때
-        articleFirst.setTitle("수정된 제목");
+        // 하나 수정하려고 할 때
+        article2.setTitle("제목 2-2");
 
         // 하나 삭제하려고 할 때
-        articleService.delete(articleSecond);
+        articleService.delete(article1);
     }
 
 
