@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Profile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,13 +35,16 @@ public class NotProd {
     @Bean // 빈을 등록한다. 스트링부트에. 개발자가 new 하지 않아도 스프링부트가 직접 관리하는 객체. 실행될때 자동으로 올라간다.
     public ApplicationRunner initNotProd() {
         return args -> {
-            this.work1();
-            work2(); //this. 가 생략 되어 있다.
+            self.work1();
+            self.work2(); //this. 가 생략 되어 있다.
+            self.work3();
+            self.work4();
+            self.work5();
         };
     }
 
     @Transactional
-    public void work1 () {
+    public void work1() {
         System.out.println("Not Prod.initNotProd1");
         System.out.println("Not Prod.initNotProd2");
         System.out.println("Not Prod.initNotProd3");
@@ -83,7 +87,7 @@ public class NotProd {
 
 
     @Transactional
-    public void work2 () {
+    public void work2() {
         // Optional : List와 비슷하다
         // 차이점
         //	- List : 0 ~ N 개 가능
@@ -92,5 +96,39 @@ public class NotProd {
 
         List<Article> articleList = articleRepository.findAll();
 
+    }
+
+    @Transactional
+    public void work3() {
+        List <Long> ids = new ArrayList<>();
+        ids.add(1L);
+        ids.add(2L);
+        ids.add(3L);
+        // select *
+        // from article
+        // where id IN (1,2,3)
+        // order by title DESC, id asc;
+        // articleRepository.findByIdInOrderByTitleDescIdAsc(ids);
+        articleRepository.findByIdInOrderByTitleDescIdAsc(List.of(1L, 2L, 3L));
+    }
+
+    @Transactional
+    public void work4() {
+        String keyword = "안녕";
+        // select *
+        // from article
+        // where title LIKE '%안녕%';
+        articleRepository.findByTitleContaining(keyword);
+    }
+
+    @Transactional
+    public void work5() {
+        String title = "안녕";
+        String body = "잘가";
+        // select *
+        // from article
+        // where title = '안녕'
+        // AND body = '잘가';
+        articleRepository.findByTitleAndBody(title, body);
     }
 }
