@@ -21,6 +21,10 @@ public class NotProd {
             System.out.println("Not Prod.initNotProd2");
             System.out.println("Not Prod.initNotProd3");
 
+            // articleRepository.deleteAll(); // AUTO_INCREMENT 값이 초기화 되지 않는다.
+
+            // DB 쪽에서 직접 TRUNCATE : AUTO_INCREMENT 값이 초기화 된다.
+
             long countAll = articleRepository.count();
 
             System.out.println("countAll: " + countAll);

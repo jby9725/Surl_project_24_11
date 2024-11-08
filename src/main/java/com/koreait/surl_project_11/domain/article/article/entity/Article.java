@@ -4,14 +4,20 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity // 이거 클래스 가지고 테이블 만들 거임!
+// Entity를 사용했으면, NoArgsConstructor는 있어야 함.
 @Builder
+// 하지만 NoArgsConstructor 추가하면 빌더가 뭐라고 하고, 그걸 피하기 위해서는 AllArgsConstructor 가 있어야 함.
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Article {
 
     @Id // 이 필드를 PK로 쓸거임!
