@@ -42,30 +42,30 @@ public class NotProd {
     public ApplicationRunner initNotProd() {
         return args -> {
             self.work1();
-            work2(); //this. 가 생략 되어 있다. 이러면 트랜잭션 적용을 못 받는다.
+            // work2(); //this. 가 생략 되어 있다. 이러면 트랜잭션 적용을 못 받는다.
 //            self.work3();
 //            self.work4();
 //            self.work5();
 
-            self.joinMember();
+            // self.joinMember();
         };
     }
 
     @Transactional
     public void work1() {
-
-        // articleRepository.deleteAll(); // AUTO_INCREMENT 값이 초기화 되지 않는다.
-        // DB 쪽에서 직접 TRUNCATE : AUTO_INCREMENT 값이 초기화 된다.
-
         if (articleService.count() > 0) return;
 
-        Article article1 = articleService.write("제목 1", "내용 1").getData();
-        Article article2 = articleService.write("제목 2", "내용 2").getData();
+        Member member1 = memberService.join("user1", "1234", "유저 1").getData();
+        Member member2 = memberService.join("user2", "1234", "유저 2").getData();
 
-        // 하나 수정하려고 할 때
+        Article article1 = articleService.write(member1, "제목 1", "내용 1").getData();
+        Article article2 = articleService.write(member1, "제목 2", "내용 2").getData();
+
+        Article article3 = articleService.write(member2, "제목 3", "내용 3").getData();
+        Article article4 = articleService.write(member2, "제목 4", "내용 4").getData();
+
         article2.setTitle("제목 2-2");
 
-        // 하나 삭제하려고 할 때
         articleService.delete(article1);
     }
 
