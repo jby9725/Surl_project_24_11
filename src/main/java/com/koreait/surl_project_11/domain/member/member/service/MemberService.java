@@ -49,4 +49,7 @@ public class MemberService {
         return memberRepository.findByUsername(username);
     }
 
+    public Member getReferenceById(long id) {
+        return memberRepository.getReferenceById(id);
+    }
 }
