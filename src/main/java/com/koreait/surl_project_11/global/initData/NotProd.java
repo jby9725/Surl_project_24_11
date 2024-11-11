@@ -42,12 +42,7 @@ public class NotProd {
     public ApplicationRunner initNotProd() {
         return args -> {
             self.work1();
-            // work2(); //this. 가 생략 되어 있다. 이러면 트랜잭션 적용을 못 받는다.
-//            self.work3();
-//            self.work4();
-//            self.work5();
-
-            // self.joinMember();
+            self.work2();
         };
     }
 
@@ -58,28 +53,24 @@ public class NotProd {
         Member member1 = memberService.join("user1", "1234", "유저 1").getData();
         Member member2 = memberService.join("user2", "1234", "유저 2").getData();
 
-        Article article1 = articleService.write(member1, "제목 1", "내용 1").getData();
-        Article article2 = articleService.write(member1, "제목 2", "내용 2").getData();
+        Article article1 = articleService.write(member1,"제목 1", "내용 1").getData();
+        Article article2 = articleService.write(member1,"제목 2", "내용 2").getData();
 
-        Article article3 = articleService.write(member2, "제목 3", "내용 3").getData();
-        Article article4 = articleService.write(member2, "제목 4", "내용 4").getData();
+        Article article3 = articleService.write(member2,"제목 3", "내용 3").getData();
+        Article article4 = articleService.write(member2,"제목 4", "내용 4").getData();
 
         article2.setTitle("제목 2-2");
 
         articleService.delete(article1);
     }
 
-
     @Transactional
     public void work2() {
-        // Optional : List와 비슷하다
-        // 차이점
-        //	- List : 0 ~ N 개 가능
-        //	- Optional : 0 ~ 1 개 가능
-        Optional<Article> articleOptional = articleService.findById(1L);
+        // List : 0 ~ N
+        // Optional : 0 ~ 1
+        Optional<Article> opArticle = articleService.findById(2L); // JpaRepository 기본 제공
 
-        List<Article> articleList = articleService.findAll();
-
+        List<Article> articles = articleService.findAll(); // JpaRepository 기본 제공
     }
 
     @Transactional
