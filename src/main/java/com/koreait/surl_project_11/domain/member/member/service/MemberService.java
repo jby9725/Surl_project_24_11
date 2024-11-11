@@ -44,12 +44,16 @@ public class MemberService {
         return RsData.of("%d번 멤버가 회원가입됨.".formatted(member.getId()), member);
     }
 
-    // private 이라서 @Transactional 이 붙지 않음.
-    private Optional<Member> findByUsername(String username) {
+    @Transactional
+    public Optional<Member> findByUsername(String username) {
         return memberRepository.findByUsername(username);
     }
 
     public Member getReferenceById(long id) {
         return memberRepository.getReferenceById(id);
+    }
+
+    public long count() {
+        return memberRepository.count();
     }
 }
