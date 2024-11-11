@@ -4,7 +4,6 @@ import com.koreait.surl_project_11.domain.article.article.entity.Article;
 import com.koreait.surl_project_11.domain.article.article.service.ArticleService;
 import com.koreait.surl_project_11.domain.member.member.entity.Member;
 import com.koreait.surl_project_11.domain.member.member.service.MemberService;
-import com.koreait.surl_project_11.global.rsData.RsData;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +12,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.annotation.Order;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,10 +38,11 @@ public class NotProd {
 //    private ArticleRepository articleRepository;
 
     @Bean // 빈을 등록한다. 스트링부트에. 개발자가 new 하지 않아도 스프링부트가 직접 관리하는 객체. 실행될때 자동으로 올라간다.
+    @Order(4)
     public ApplicationRunner initNotProd() {
         return args -> {
             self.work1();
-            self.work2();
+            // self.work2();
         };
     }
 
@@ -69,46 +69,4 @@ public class NotProd {
 
         List<Article> articles = articleService.findAll(); // JpaRepository 기본 제공
     }
-
-    @Transactional
-    public void work3() {
-        List<Long> ids = new ArrayList<>();
-        ids.add(1L);
-        ids.add(2L);
-        ids.add(3L);
-        // articleRepository.findByIdInOrderByTitleDescIdAsc(ids); 또는
-//        articleRepository.findByIdInOrderByTitleDescIdAsc(List.of(1L, 2L, 3L));
-    }
-
-    @Transactional
-    public void work4() {
-        String keyword = "안녕";
-//        articleRepository.findByTitleContaining(keyword);
-    }
-
-    @Transactional
-    public void work5() {
-        String title = "안녕";
-        String body = "잘가";
-//        articleRepository.findByTitleAndBody(title, body);
-    }
-
-    @Transactional
-    public void joinMember() {
-
-        Member member1 = memberService.join("user1", "1234", "유저1").getData();
-        RsData<Member> member2 = memberService.join("user2", "1234", "유저2");
-
-//        try {
-//            RsData<Member> joinRs = memberService.join("user2", "1234", "유저 2");
-//        } catch (GlobalException e) {
-//            System.out.println("e.getMsg() : " + e.getRsData().getMsg());
-//            System.out.println("e.getStatusCode() : " + e.getRsData().getStatusCode());
-//        }
-
-        System.out.println("member3.getMsg() : " + member2.getMsg());
-        System.out.println("member3.getStatusCode() : " + member2.getStatusCode());
-
-    }
-
 }
