@@ -1,7 +1,6 @@
 package com.koreait.surl_project_11.domain.member.member.entity;
 
 import com.koreait.surl_project_11.global.jpa.entity.BaseTime;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import lombok.*;
@@ -20,7 +19,6 @@ import static lombok.AccessLevel.PROTECTED;
 @EntityListeners(AuditingEntityListener.class) // @CreatedDate 와 @LastModifiedDate 쓸려면 붙여야 함.
 @ToString
 public class Member extends BaseTime {
-    @Column(unique = true)
     private String username;
 //    @Column(columnDefinition = "TEXT") // 이 필드의 자료형을 TEXT로 지정 할거야!
     private String password;

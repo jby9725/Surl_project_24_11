@@ -9,13 +9,14 @@ import lombok.NonNull;
 
 import static lombok.AccessLevel.PRIVATE;
 
+// Spring Doc + openapi fetch
+
 @AllArgsConstructor(access = PRIVATE)
 @NoArgsConstructor(access = PRIVATE)
 @Getter
 public class RsData<T> {
     public static final RsData<Empty> OK = of("200-1", "성공", new Empty());
     public static final RsData<Empty> FAIL = of("500-1", "실패", new Empty());
-
     @NonNull
     String resultCode;
     @NonNull

@@ -4,4 +4,4 @@ spring:
       enabled: always
 custom:
   site:
-    name: "My Site develop"
+    name: "My Site Develop"

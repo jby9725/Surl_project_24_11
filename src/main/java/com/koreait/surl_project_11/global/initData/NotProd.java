@@ -14,9 +14,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 
-import java.util.List;
-import java.util.Optional;
-
 @Profile("!prod") // !prod == dev or test 일 때 실행하겠다.
 @Configuration // 빈이 자동화되서 실행된다 >> 이 어노테이션이 붙어있어야 실행한다.
 @RequiredArgsConstructor
@@ -42,7 +39,6 @@ public class NotProd {
     public ApplicationRunner initNotProd() {
         return args -> {
             self.work1();
-            // self.work2();
         };
     }
 
@@ -58,15 +54,5 @@ public class NotProd {
 
         Article article3 = articleService.write(memberUser2, "제목 3", "내용 3").getData();
         Article article4 = articleService.write(memberUser2, "제목 4", "내용 4").getData();
-
-    }
-
-    @Transactional
-    public void work2() {
-        // List : 0 ~ N
-        // Optional : 0 ~ 1
-        Optional<Article> opArticle = articleService.findById(2L); // JpaRepository 기본 제공
-
-        List<Article> articles = articleService.findAll(); // JpaRepository 기본 제공
     }
 }
