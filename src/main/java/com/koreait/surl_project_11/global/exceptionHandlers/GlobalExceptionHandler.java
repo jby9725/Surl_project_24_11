@@ -29,12 +29,15 @@ public class GlobalExceptionHandler {
     // @ResponseStatus(HttpStatus.BAD_REQUEST) // 상태코드 400으로 고정
     @ResponseBody
     // ResponseEntity<String> : 상황에 따라서 다른 상태코드 지정 가능
-    public ResponseEntity<String> handleException(GlobalException exception) {
-        RsData<Empty> rsData = exception.getRsData();
+    public ResponseEntity<RsData<Empty>> handleException(GlobalException ex) {
+        log.debug("handleException started!");
+        RsData<Empty> rsData = ex.getRsData();
 
         rsData.getStatusCode();
 
-        return ResponseEntity.status(rsData.getStatusCode()).body(rsData.getMsg());
+        return ResponseEntity
+                .status(rsData.getStatusCode())
+                .body(rsData);
     }
 
 }
