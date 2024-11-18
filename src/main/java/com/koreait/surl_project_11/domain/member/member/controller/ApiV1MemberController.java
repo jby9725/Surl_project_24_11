@@ -2,9 +2,9 @@ package com.koreait.surl_project_11.domain.member.member.controller;
 
 import com.koreait.surl_project_11.domain.member.member.entity.Member;
 import com.koreait.surl_project_11.domain.member.member.service.MemberService;
-import com.koreait.surl_project_11.global.exceptions.GlobalException;
 import com.koreait.surl_project_11.global.rsData.RsData;
-import com.koreait.surl_project_11.standard.util.Ut;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +21,11 @@ public class ApiV1MemberController {
     @AllArgsConstructor
     @Getter
     public static class MemberJoinReqBody {
+        @NotBlank(message = "username 입력하세요")
         private String username;
+        @NotBlank(message = "password 입력하세요")
         private String password;
+        @NotBlank(message = "nickname 입력하세요")
         private String nickname;
     }
 
@@ -31,24 +34,8 @@ public class ApiV1MemberController {
     // POST /api/v1/members/join
     @PostMapping("/join")
     public RsData<Member> join(
-            @RequestBody MemberJoinReqBody requestBody
+            @RequestBody @Valid MemberJoinReqBody requestBody
     ) {
-        // 같은 클래스 안에 있으니 바로 접근 가능. username.
-        if (Ut.str.isBlank(requestBody.username)) {
-            // 예외 상황이 발생 했을 때, return 보다는 throw 가 낫다.
-            // return RsData.of("400-1", "username 입력하세요.");
-            throw new GlobalException("400-1", "username 입력하세요.");
-        }
-
-        if (Ut.str.isBlank(requestBody.password)) {
-            // return RsData.of("400-1", "password 입력하세요.");
-            throw new GlobalException("400-2", "password 입력하세요.");
-        }
-
-        if (Ut.str.isBlank(requestBody.nickname)) {
-            // return RsData.of("400-1", "nickname 입력하세요.");
-            throw new GlobalException("400-3", "nickname 입력하세요.");
-        }
 
         return memberService.join(requestBody.username, requestBody.password, requestBody.nickname);
 
