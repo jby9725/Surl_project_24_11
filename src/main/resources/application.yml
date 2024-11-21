@@ -22,7 +22,6 @@ spring:
       fail-on-empty-beans: false
 
   jpa:
-    open-in-view: false
     hibernate:
       ddl-auto: update
     properties:
