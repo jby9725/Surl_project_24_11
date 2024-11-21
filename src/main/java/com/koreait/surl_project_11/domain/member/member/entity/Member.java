@@ -23,4 +23,8 @@ public class Member extends BaseTime {
 //    @Column(columnDefinition = "TEXT") // 이 필드의 자료형을 TEXT로 지정 할거야!
     private String password;
     private String nickname;
+
+    public String getName() {
+        return nickname;
+    }
 }
