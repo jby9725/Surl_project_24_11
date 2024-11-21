@@ -13,12 +13,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/surls")
 @RequiredArgsConstructor
 @Slf4j
+@Transactional(readOnly = true)
 public class ApiV1SurlController {
 
     private final Rq rq;
@@ -43,6 +45,7 @@ public class ApiV1SurlController {
     // /api/v1/surls/add
     @PostMapping("/add")
     @ResponseBody
+    @Transactional
     public RsData<SurlAddRespBody> add(
             @RequestBody @Valid SurlAddReqBody reqBody
     ) {
@@ -67,6 +70,7 @@ public class ApiV1SurlController {
     // /api/v1/surls/1
     // /api/v1/surls?id=1
     @GetMapping("/{id}")
+    // get에는 기본적으로 클래스에 적용된 readOnly 덕분에 트랜잭션이 따로 필요 없다.
     public RsData<SurlGetRespBody> get(
             @PathVariable long id
     ) {
