@@ -2,6 +2,7 @@ package com.koreait.surl_project_11.domain.surl.surl.controller;
 
 import com.koreait.surl_project_11.domain.auth.auth.service.AuthService;
 import com.koreait.surl_project_11.domain.member.member.entity.Member;
+import com.koreait.surl_project_11.domain.member.member.service.MemberService;
 import com.koreait.surl_project_11.domain.surl.surl.dto.SurlDto;
 import com.koreait.surl_project_11.domain.surl.surl.entity.Surl;
 import com.koreait.surl_project_11.domain.surl.surl.service.SurlService;
@@ -31,6 +32,7 @@ public class ApiV1SurlController {
 
     private final SurlService surlService;
     private final AuthService authService;
+    private final MemberService memberService;
 
     @AllArgsConstructor
     @Getter
@@ -95,7 +97,14 @@ public class ApiV1SurlController {
     }
 
     @GetMapping("")
-    public RsData<SurlGetItemsRespBody> getItems() {
+    public RsData<SurlGetItemsRespBody> getItems(
+            String actorUsername
+    ) {
+
+        Member logindMember = memberService.findByUsername(actorUsername).orElseThrow(GlobalException.E404::new);
+
+        rq.setMember(logindMember);
+
         Member member = rq.getMember();
 
         List<Surl> surls = surlService.findByAuthorOrderByIdDesc(member);
