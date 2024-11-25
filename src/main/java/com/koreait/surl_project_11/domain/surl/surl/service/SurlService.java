@@ -43,6 +43,10 @@ public class SurlService { // 비지니스 로직 처리 담당
         surl.increaseCount();
     }
 
+    public List<Surl> findByAuthorOrderByIdDesc(Member author) {
+        return surlRepository.findByAuthorOrderByIdDesc(author);
+    }
+
     @Transactional
     public void delete(Surl surl) {
         surlRepository.delete(surl);
