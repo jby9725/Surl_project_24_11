@@ -51,4 +51,13 @@ public class SurlService { // 비지니스 로직 처리 담당
     public void delete(Surl surl) {
         surlRepository.delete(surl);
     }
+
+    @Transactional
+    public RsData<Surl> modify(Surl surl, String body, String url) {
+        surl.setBody(body);
+        surl.setUrl(url);
+
+        return RsData.of("%d번 SURL이 수정됨".formatted(surl.getId()), surl);
+    }
+
 }
