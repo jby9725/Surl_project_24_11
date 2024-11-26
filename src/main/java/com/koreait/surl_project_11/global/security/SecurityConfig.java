@@ -15,6 +15,17 @@ public class SecurityConfig {
                                 .requestMatchers("/actuator/**").permitAll()
                                 .anyRequest().authenticated()
                 )
+                .headers( // h2 콘솔을 위한 것
+                        headers ->
+                                headers.frameOptions(
+                                        frameOptions ->
+                                                frameOptions.sameOrigin()
+                                )
+                )
+                .csrf( // 타임리프, MPA에서는 csrf를 사용함 // REST API 방식에서는 끈다
+                        csrf ->
+                                csrf.disable()
+                )
                 .formLogin(formLogin ->
                         formLogin.permitAll()
                 );
