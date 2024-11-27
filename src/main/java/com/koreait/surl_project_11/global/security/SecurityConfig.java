@@ -1,5 +1,7 @@
 package com.koreait.surl_project_11.global.security;
 
+import com.koreait.surl_project_11.global.rsData.RsData;
+import com.koreait.surl_project_11.standard.util.Ut;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -36,7 +38,22 @@ public class SecurityConfig {
                 )
                 .formLogin(formLogin ->
                         formLogin.permitAll()
-                ).addFilterBefore(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                )
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .authenticationEntryPoint(
+                                (request, response, authException) -> {
+                                    response.setContentType("application/json; charset=utf-8");
+                                    response.setStatus(403);
+                                    response.getWriter().write(
+                                            Ut.json.toString(
+                                                    RsData.of("403-1", request.getRequestURI() + ", " + authException.getLocalizedMessage())
+                                            )
+                                    );
+                                }
+                        ))
+
+
+                .addFilterBefore(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

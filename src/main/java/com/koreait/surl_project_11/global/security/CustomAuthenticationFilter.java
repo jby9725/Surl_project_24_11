@@ -41,8 +41,9 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
                 actorPassword = authorizationBits.length == 2 ? authorizationBits[1] : null;
             }
         }
+        
         if (Ut.str.isBlank(actorUsername) || Ut.str.isBlank(actorPassword)) {
-            filterChain.doFilter(req, resp);
+            filterChain.doFilter(req, resp); // doFilter : 필터를 종료하고 다음 턴으로 넘긴다.
             return;
         }
         Member loginedMember = memberService.findByUsername(actorUsername).orElse(null);
