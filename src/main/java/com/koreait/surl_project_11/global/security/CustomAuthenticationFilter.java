@@ -41,7 +41,7 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
                 actorPassword = authorizationBits.length == 2 ? authorizationBits[1] : null;
             }
         }
-        
+
         if (Ut.str.isBlank(actorUsername) || Ut.str.isBlank(actorPassword)) {
             filterChain.doFilter(req, resp); // doFilter : 필터를 종료하고 다음 턴으로 넘긴다.
             return;
@@ -55,7 +55,7 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(req, resp);
             return;
         }
-        User user = new User(loginedMember.getUsername(), "", List.of());
+        User user = new User(loginedMember.getId() + "", "", List.of());
         Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(req, resp);
