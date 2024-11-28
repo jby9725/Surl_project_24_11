@@ -9,10 +9,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class AuthTokenService {
+
     public String genToken(Member member, long expireSeconds) {
         Claims claims = Jwts.claims()
                 .add("id", member.getId())
@@ -26,5 +28,26 @@ public class AuthTokenService {
                 .setExpiration(expiration)
                 .signWith(SignatureAlgorithm.HS256, AppConfig.getJwtSecretKey())
                 .compact();
+    }
+
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parser().setSigningKey(AppConfig.getJwtSecretKey()).build().parseClaimsJws(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public Map<String, Object> getDataFrom(String token) {
+        Claims payload = Jwts.parser()
+                .setSigningKey(AppConfig.getJwtSecretKey())
+                .build()
+                .parseClaimsJws(token).getPayload();
+
+        return Map.of(
+                "id", payload.get("id", Integer.class),
+                "username", payload.get("username", String.class)
+        );
     }
 }
