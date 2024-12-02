@@ -22,7 +22,7 @@ import static lombok.AccessLevel.PROTECTED;
 public class Member extends BaseTime {
     @Column(unique = true)
     private String username;
-//    @Column(columnDefinition = "TEXT") // 이 필드의 자료형을 TEXT로 지정 할거야!
+    //    @Column(columnDefinition = "TEXT") // 이 필드의 자료형을 TEXT로 지정 할거야!
     private String password;
     private String nickname;
     @Column(unique = true)

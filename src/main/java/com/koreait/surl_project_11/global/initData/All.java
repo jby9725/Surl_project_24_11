@@ -17,10 +17,10 @@ import org.springframework.core.annotation.Order;
 @Slf4j
 public class All {
 
+    private final MemberService memberService;
     @Lazy
     @Autowired
     private All self;
-    private final MemberService memberService;
 
     @Bean
     @Order(3)
