@@ -14,9 +14,9 @@
 			form.password.focus();
 			return;
 		}
-		const rs = await fetch('http://localhost:8070/api/v1/members/login', {
+		const rs = await fetch(`${import.meta.env.VITE_CORE_API_BASE_URL}/api/v1/members/login`, {
 			method: 'POST',
-			//credentials: 'include', : 타 도메인간의 쿠키 통신이 가능하도록
+			credentials: 'include', // 타 도메인간의 쿠키 통신이 가능하도록
 			headers: {
 				'Content-Type': 'application/json'
 			},
@@ -33,13 +33,13 @@
 	<div>
 		<label>
 			<span>username</span>
-			<input type="text" name="username" placeholder="username" />
+			<input type="text" name="username" placeholder="username 써" />
 		</label>
 	</div>
 	<div>
 		<label>
 			<span>password</span>
-			<input type="text" name="password" placeholder="password" />
+			<input type="text" name="password" placeholder="password 써" />
 		</label>
 	</div>
 	<div>
