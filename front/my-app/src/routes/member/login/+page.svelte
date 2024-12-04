@@ -30,28 +30,22 @@
 </script>
 
 <form on:submit|preventDefault={submitLoginForm}>
-    <div>
-        <span>
-            username
-        </span>
-        <label>
-            <input type="text" name="username" placeholder="username 써">
-        </label>
-    </div>
-    <div>
-        <span>
-            password
-        </span>
-        <label>
-            <input type="text" name="password" placeholder="password 써">
-        </label>
-    </div>
-    <div>
-        <span>
-            login
-        </span>
-        <label>
-            <input type="submit" value="LOGIN">
-        </label>
-    </div>
+	<div>
+		<label>
+			<span>username</span>
+			<input type="text" name="username" placeholder="username" />
+		</label>
+	</div>
+	<div>
+		<label>
+			<span>password</span>
+			<input type="text" name="password" placeholder="password" />
+		</label>
+	</div>
+	<div>
+		<label>
+			<span>로그인</span>
+			<input type="submit" value="로그인" />
+		</label>
+	</div>
 </form>
