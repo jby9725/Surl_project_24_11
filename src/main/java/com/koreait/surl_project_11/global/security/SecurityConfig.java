@@ -21,9 +21,12 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeRequests(authorizeRequests ->
+        http
+                .authorizeRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers(HttpMethod.POST, "/api/*/members", "/api/*/members/login").permitAll()
+                                .requestMatchers(HttpMethod.DELETE, "/api/*/members/logout")
+                                .permitAll()
                                 .requestMatchers("/h2-console/**").permitAll()
                                 .requestMatchers("/actuator/**").permitAll()
                                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
@@ -31,17 +34,17 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/g/*").permitAll()
                                 .anyRequest().authenticated()
                 )
-                .headers( // h2 콘솔을 위한 것
+                .headers(
                         headers ->
                                 headers.frameOptions(
                                         frameOptions ->
                                                 frameOptions.sameOrigin()
                                 )
                 )
-                .csrf( // 타임리프, MPA에서는 csrf를 사용함 // REST API 방식에서는 끈다
+                .csrf(
                         csrf ->
                                 csrf.disable()
-                )
+                ) // 타임리프, MPA에서는 csrf를 사용함 // REST API 방식에서는 끈다
                 .cors(Customizer.withDefaults()) // 6.1 이상부터는 걍 쓰면 됨
                 .formLogin(formLogin ->
                         formLogin.permitAll()
@@ -58,6 +61,7 @@ public class SecurityConfig {
                                     );
                                 }
                         ))
+
 
                 .addFilterBefore(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
