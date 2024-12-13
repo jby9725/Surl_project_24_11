@@ -1,5 +1,6 @@
 package com.koreait.surl_project_11.domain.member.member.service;
 
+import com.koreait.surl_project_11.domain.auth.auth.service.AuthTokenService;
 import com.koreait.surl_project_11.domain.member.member.entity.Member;
 import com.koreait.surl_project_11.domain.member.member.repository.MemberRepository;
 import com.koreait.surl_project_11.global.exceptions.GlobalException;
@@ -10,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +18,7 @@ import java.util.UUID;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AuthTokenService authTokenService;
 
     // 리턴
     // - 이번에 생성된 멤버의 번호
@@ -40,7 +41,7 @@ public class MemberService {
                 .username(username)
                 .password(passwordEncoder.encode(password))
                 .nickname(nickname)
-                .refreshToken(UUID.randomUUID().toString())
+                .refreshToken(authTokenService.genRefreshToken())
                 .build();
 
         memberRepository.save(member);
