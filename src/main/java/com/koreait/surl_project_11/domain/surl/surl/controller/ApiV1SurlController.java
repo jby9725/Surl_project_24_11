@@ -19,6 +19,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.lang.NonNull;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,27 +36,25 @@ import java.util.List;
 public class ApiV1SurlController {
 
     private final Rq rq;
-
     private final SurlService surlService;
     private final AuthService authService;
     private final MemberService memberService;
 
-    // /api/v1/surls/add
-    @PostMapping("/add")
+    @PostMapping("")
     @ResponseBody
     @Transactional
     @Operation(summary = "생성")
     public RsData<SurlAddRespBody> add(
             @RequestBody @Valid SurlAddReqBody reqBody
     ) {
-
-        Member member = rq.getMember(); // 현재 브라우저로 로그인 한 회원 정보. 프록시 사용
+        Member member = rq.getMember(); // 현재 브라우저로 로그인 한 회원 정보
 
         RsData<Surl> addRs = surlService.add(member, reqBody.body, reqBody.url);
 
         return addRs.newDataOf(
                 new SurlAddRespBody(
-                        new SurlDto(addRs.getData()))
+                        new SurlDto(addRs.getData())
+                )
         );
     }
 
@@ -64,7 +63,6 @@ public class ApiV1SurlController {
     // /api/v1/surls?id=1
     @GetMapping("/{id}")
     @Operation(summary = "단건조회")
-    // get에는 기본적으로 클래스에 적용된 readOnly 덕분에 트랜잭션이 따로 필요 없다.
     public RsData<SurlGetRespBody> get(
             @PathVariable long id
     ) {
@@ -76,7 +74,9 @@ public class ApiV1SurlController {
         authService.checkCanGetSurl(rq.getMember(), surl);
 
         return RsData.of(
-                new SurlGetRespBody(new SurlDto(surl))
+                new SurlGetRespBody(
+                        new SurlDto(surl)
+                )
         );
     }
 
@@ -129,7 +129,9 @@ public class ApiV1SurlController {
         RsData<Surl> modifyRs = surlService.modify(surl, reqBody.body, reqBody.url);
 
         return modifyRs.newDataOf(
-                new SurlModifyRespBody(
+                new
+
+                        SurlModifyRespBody(
                         new SurlDto(modifyRs.getData())
                 )
         );
@@ -147,18 +149,21 @@ public class ApiV1SurlController {
     @AllArgsConstructor
     @Getter
     public static class SurlAddRespBody {
+        @NonNull
         private SurlDto item;
     }
 
     @AllArgsConstructor
     @Getter
     public static class SurlGetRespBody {
+        @NonNull
         private SurlDto item;
     }
 
     @AllArgsConstructor
     @Getter
     public static class SurlGetItemsRespBody {
+        @NonNull
         private List<SurlDto> items;
     }
 
@@ -174,6 +179,8 @@ public class ApiV1SurlController {
     @AllArgsConstructor
     @Getter
     public static class SurlModifyRespBody {
+        @NonNull
         private SurlDto item;
     }
+
 }
