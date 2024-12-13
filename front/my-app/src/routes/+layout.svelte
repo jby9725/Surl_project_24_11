@@ -1,10 +1,9 @@
 <script lang="ts">
+	import rq from '$lib/rq/rq.svelte';
+
 	async function logout() {
-		const rs = await fetch(`${import.meta.env.VITE_CORE_API_BASE_URL}/api/v1/members/logout`, {
-			method: 'DELETE',
-			credentials: 'include'
-		}).then((res) => res.json());
-		console.log(rs);
+		await rq.getClient().DELETE('/api/v1/members/logout');
+		rq.goto('/');
 	}
 </script>
 
